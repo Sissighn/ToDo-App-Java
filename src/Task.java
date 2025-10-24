@@ -1,8 +1,10 @@
 package JavaProjects.TodoApp.src;
 
-public class Task {
+import java.io.Serializable;
 
-  private String title;
+public class Task implements Serializable {
+
+  private final String title;
   private boolean isDone;
 
   public Task(String title) {
