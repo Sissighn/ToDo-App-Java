@@ -1,17 +1,31 @@
 package JavaProjects.TodoApp.src;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Task implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  public enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH
+  }
+
   private final String title;
   private boolean isDone;
+  private LocalDate deadline;
+  private Priority priority;
 
-  public Task(String title) {
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+  public Task(String title, LocalDate deadline, Priority priority) {
     this.title = title;
     this.isDone = false;
+    this.deadline = deadline;
+    this.priority = priority;
   }
 
   public String getTitle() {
@@ -30,8 +44,26 @@ public class Task implements Serializable {
     this.isDone = false;
   }
 
+  public LocalDate getDeadline() {
+    return deadline;
+  }
+
+  public Priority getPriority() {
+    return priority;
+  }
+
   @Override
   public String toString() {
-    return (isDone ? "[X]" : "[ ]") + title;
+    String dateStr = (deadline != null) ? deadline.format(DATE_FORMATTER) : "—";
+    String priorityStr = (priority != null) ? priority.name() : "—";
+    return (isDone ? "[✔]" : "[ ]") + " " + title + " (" + priorityStr + ", " + dateStr + ")";
+  }
+
+  public static LocalDate parseDate(String input) {
+    try {
+      return LocalDate.parse(input, DATE_FORMATTER);
+    } catch (Exception e) {
+      return null;
+    }
   }
 }

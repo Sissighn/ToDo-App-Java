@@ -21,6 +21,7 @@ public class UIHelper {
   public static final String PASTEL_CYAN = "\u001B[38;5;159m"; // #AFFFFF
   public static final String PASTEL_BROWN = "\u001B[38;5;180m"; // #AF8787
   public static final String PASTEL_RED = "\u001B[38;5;131m"; // #875F5F
+  public static final String PASTEL_RED_URGENT = "\u001b[38;2;210;58;58m"; // #d23a3aff
   public static final String PASTEL_GREEN = "\u001B[38;5;120m"; // #5fff5f
 
   private static final String SETTINGS_FILE = "settings.cfg";
@@ -191,7 +192,7 @@ public class UIHelper {
       pw.println("lang=" + (lang == Language.DE ? "DE" : "EN"));
     } catch (IOException e) {
       System.out.println(
-          PASTEL_RED + "Could not save settings: " + e.getMessage() + RESET);
+          PASTEL_RED_URGENT + "Could not save settings: " + e.getMessage() + RESET);
     }
   }
 }

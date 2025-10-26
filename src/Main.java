@@ -1,6 +1,8 @@
 package JavaProjects.TodoApp.src;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -57,10 +59,37 @@ public class Main {
     String title = scanner.nextLine().trim();
     if (title.isEmpty()) {
       System.out.println(
-          UIHelper.PASTEL_RED + UIHelper.t("empty_task") + UIHelper.RESET);
+          UIHelper.PASTEL_RED_URGENT + UIHelper.t("empty_task") + UIHelper.RESET);
       return;
     }
-    tasks.add(new Task(title));
+
+    // Deadline
+    System.out.print("Enter deadline (dd.MM.yyyy) or leave empty: ");
+    String deadlineInput = scanner.nextLine().trim();
+    LocalDate deadline = null;
+    if (!deadlineInput.isEmpty()) {
+      try {
+        deadline = LocalDate.parse(deadlineInput, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+      } catch (Exception e) {
+        System.out.println(UIHelper.PASTEL_YELLOW + "Invalid date format, ignored." + UIHelper.RESET);
+      }
+    }
+
+    // Priority
+    System.out.print("Enter priority (1 = LOW, 2 = MEDIUM, 3 = HIGH): ");
+    String priorityInput = scanner.nextLine().trim();
+    Task.Priority priority = null;
+
+    if (!priorityInput.isEmpty()) {
+      switch (priorityInput) {
+        case "1" -> priority = Task.Priority.LOW;
+        case "2" -> priority = Task.Priority.MEDIUM;
+        case "3" -> priority = Task.Priority.HIGH;
+        default -> System.out.println(UIHelper.PASTEL_YELLOW + "Invalid priority, set to MEDIUM." + UIHelper.RESET);
+      }
+    }
+
+    tasks.add(new Task(title, deadline, priority));
     saveTasks(tasks);
     System.out.println(
         UIHelper.PASTEL_GREEN + UIHelper.t("task_added") + UIHelper.RESET);
@@ -100,7 +129,7 @@ public class Main {
         break;
       } else {
         System.out.println(
-            UIHelper.PASTEL_RED + UIHelper.t("please_number") + UIHelper.RESET);
+            UIHelper.PASTEL_RED_URGENT + UIHelper.t("please_number") + UIHelper.RESET);
       }
     }
   }
@@ -135,7 +164,7 @@ public class Main {
         break;
       } else {
         System.out.println(
-            UIHelper.PASTEL_RED + UIHelper.t("please_number") + UIHelper.RESET);
+            UIHelper.PASTEL_RED_URGENT + UIHelper.t("please_number") + UIHelper.RESET);
       }
     }
   }
@@ -147,7 +176,7 @@ public class Main {
       oos.writeObject(tasks);
     } catch (IOException e) {
       System.out.println(
-          UIHelper.PASTEL_RED +
+          UIHelper.PASTEL_RED_URGENT +
               UIHelper.t("saving_error") +
               e.getMessage() +
               UIHelper.RESET);
@@ -219,14 +248,14 @@ public class Main {
       String input = scanner.nextLine().trim();
       if (input.isEmpty()) {
         System.out.println(
-            UIHelper.PASTEL_RED + UIHelper.t("please_number") + UIHelper.RESET);
+            UIHelper.PASTEL_RED_URGENT + UIHelper.t("please_number") + UIHelper.RESET);
         continue;
       }
       try {
         int n = Integer.parseInt(input);
         if (n < min || n > max) {
           System.out.println(
-              UIHelper.PASTEL_RED +
+              UIHelper.PASTEL_RED_URGENT +
                   String.format(UIHelper.t("invalid_choice"), min, max) +
                   UIHelper.RESET);
           continue;
@@ -234,7 +263,7 @@ public class Main {
         return n;
       } catch (NumberFormatException e) {
         System.out.println(
-            UIHelper.PASTEL_RED + UIHelper.t("please_number") + UIHelper.RESET);
+            UIHelper.PASTEL_RED_URGENT + UIHelper.t("please_number") + UIHelper.RESET);
       }
     }
   }
