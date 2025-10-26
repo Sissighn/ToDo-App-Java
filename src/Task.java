@@ -2,6 +2,7 @@ package JavaProjects.TodoApp.src;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Task implements Serializable {
@@ -16,6 +17,7 @@ public class Task implements Serializable {
 
   private final String title;
   private boolean isDone;
+  private final LocalDateTime createdDate;
   private final LocalDate deadline;
   private final Priority priority;
 
@@ -24,6 +26,7 @@ public class Task implements Serializable {
   public Task(String title, LocalDate deadline, Priority priority) {
     this.title = title;
     this.isDone = false;
+    this.createdDate = LocalDateTime.now();
     this.deadline = deadline;
     this.priority = priority;
   }
@@ -50,6 +53,10 @@ public class Task implements Serializable {
 
   public Priority getPriority() {
     return priority;
+  }
+
+  public LocalDateTime getCreatedDate() {
+    return createdDate;
   }
 
   @Override

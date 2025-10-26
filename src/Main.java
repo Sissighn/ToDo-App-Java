@@ -22,31 +22,22 @@ public class Main {
       while (running) {
         TodoPrinter.printTodoList(tasks);
 
-        int choice = getValidNumber(scanner, UIHelper.t(""), 1, 5);
+        int choice = getValidNumber(scanner, UIHelper.t(""), 1, 6);
 
         switch (choice) {
-          case 1 -> {
-            addTask(tasks, scanner);
-          }
-          case 2 -> {
-            markTaskDone(tasks, scanner);
-          }
-          case 3 -> {
-            deleteTask(tasks, scanner);
-          }
-          case 4 -> {
-            settingsMenu(scanner);
-            // reload language after settings (UIHelper already updated and saved)
-            UIHelper.setLanguage(UIHelper.getLanguage());
-          }
-          case 5 -> {
+          case 1 -> addTask(tasks, scanner);
+          case 2 -> markTaskDone(tasks, scanner);
+          case 3 -> deleteTask(tasks, scanner);
+          case 4 -> sortTasks(tasks, scanner); // new option
+          case 5 -> settingsMenu(scanner);
+          case 6 -> {
             System.out.println(
                 UIHelper.PASTEL_GREEN + UIHelper.t("goodbye") + UIHelper.RESET);
             saveTasks(tasks);
             running = false;
           }
           default -> System.out.println(
-              String.format(UIHelper.t("invalid_choice"), 1, 5));
+              String.format(UIHelper.t("invalid_choice"), 1, 6));
         }
       }
 
@@ -188,10 +179,23 @@ public class Main {
     File f = new File(TASK_FILE);
     if (!f.exists())
       return new ArrayList<>();
-    try (
-        ObjectInputStream ois = new ObjectInputStream(
-            new FileInputStream(TASK_FILE))) {
-      return (ArrayList<Task>) ois.readObject();
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(TASK_FILE))) {
+      ArrayList<Task> list = (ArrayList<Task>) ois.readObject();
+
+      // Fix for older tasks missing createdDate
+      for (Task t : list) {
+        if (t.getCreatedDate() == null) {
+          // "now" as fallback timestamp
+          try {
+            java.lang.reflect.Field field = Task.class.getDeclaredField("createdDate");
+            field.setAccessible(true);
+            field.set(t, java.time.LocalDateTime.now());
+          } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException ignored) {
+          }
+        }
+      }
+
+      return list;
     } catch (IOException | ClassNotFoundException e) {
       return new ArrayList<>();
     }
@@ -234,6 +238,75 @@ public class Main {
       } else {
         break;
       }
+    }
+  }
+
+  private static void sortTasks(ArrayList<Task> tasks, Scanner scanner) {
+    if (tasks.isEmpty()) {
+      System.out.println(UIHelper.PASTEL_YELLOW + UIHelper.t("no_tasks") + UIHelper.RESET);
+      return;
+    }
+
+    while (true) {
+      UIHelper.printHeader(UIHelper.t("sort_menu_title"));
+      System.out.println(UIHelper.t("sort_choose"));
+      System.out.println(UIHelper.t("sort_priority"));
+      System.out.println(UIHelper.t("sort_deadline"));
+      System.out.println(UIHelper.t("sort_created"));
+      System.out.println(UIHelper.t("sort_alpha"));
+      System.out.println(UIHelper.t("sort_back"));
+
+      int opt = getValidNumber(scanner, "→ ", 1, 5);
+      switch (opt) {
+        case 1 -> {
+          // Sort by Priority (HIGH -> MEDIUM -> LOW -> null)
+          tasks.sort((a, b) -> {
+            if (a.getPriority() == null && b.getPriority() == null)
+              return 0;
+            if (a.getPriority() == null)
+              return 1;
+            if (b.getPriority() == null)
+              return -1;
+            return b.getPriority().compareTo(a.getPriority());
+          });
+        }
+        case 2 -> {
+          // Sort by Deadline (earliest first, nulls last)
+          tasks.sort((a, b) -> {
+            if (a.getDeadline() == null && b.getDeadline() == null)
+              return 0;
+            if (a.getDeadline() == null)
+              return 1;
+            if (b.getDeadline() == null)
+              return -1;
+            return a.getDeadline().compareTo(b.getDeadline());
+          });
+        }
+        case 3 -> {
+          // Sort by Created Date (oldest first, nulls last)
+          tasks.sort((a, b) -> {
+            if (a.getCreatedDate() == null && b.getCreatedDate() == null)
+              return 0;
+            if (a.getCreatedDate() == null)
+              return 1;
+            if (b.getCreatedDate() == null)
+              return -1;
+            return a.getCreatedDate().compareTo(b.getCreatedDate());
+          });
+        }
+        case 4 -> {
+          // Sort alphabetically (A → Z)
+          tasks.sort((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()));
+        }
+        case 5 -> {
+          return;
+        }
+        default -> System.out.println(UIHelper.PASTEL_RED + UIHelper.t("please_number") + UIHelper.RESET);
+      }
+
+      System.out.println(UIHelper.PASTEL_GREEN + UIHelper.t("sort_done") + UIHelper.RESET);
+      saveTasks(tasks);
+      break;
     }
   }
 

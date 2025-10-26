@@ -28,9 +28,9 @@ public class TodoPrinter {
             Task t = tasks.get(i);
             String statusSymbol = t.isDone() ? "✔" : " ";
             String coloredStatus = (t.isDone() ? checkColor : placeHolder) + "[" + statusSymbol + "]" + UIHelper.RESET;
+
             String priorityColor;
             String priorityText;
-
             if (t.getPriority() == null) {
                 priorityColor = UIHelper.PASTEL_BROWN;
                 priorityText = "—";
@@ -75,7 +75,7 @@ public class TodoPrinter {
                 titleShown = AnsiUtils.clipVisible(titleShown, target) + (spaceForTitle >= 3 ? "..." : "");
             }
 
-            // Combine all parts and pad to the fixed column width
+            // Combine all visible parts
             String cell = left + titleShown + right;
             if (AnsiUtils.visibleLength(cell) > TASK_WIDTH)
                 cell = AnsiUtils.clipVisible(cell, TASK_WIDTH);
@@ -99,8 +99,9 @@ public class TodoPrinter {
                 "1 - Add",
                 "2 - Done/Undone",
                 "3 - Delete",
-                "4 - Settings",
-                "5 - Exit",
+                "4 - Sorting",
+                "5 - Settings",
+                "6 - Exit",
         };
 
         int buttonWidth = 0;

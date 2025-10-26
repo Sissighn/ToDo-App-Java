@@ -131,6 +131,40 @@ public class UIHelper {
             "Language set to English.",
             "Sprache auf Deutsch gesetzt.",
         });
+    // Sorting menu
+    texts.put("sort_menu_title", new String[] {
+        "=== Sorting ===",
+        "=== Sortierung ==="
+    });
+    texts.put("sort_choose", new String[] {
+        "Choose a sorting option:",
+        "Wähle eine Sortieroption:"
+    });
+    texts.put("sort_priority", new String[] {
+        "1 - By Priority",
+        "1 - Nach Priorität"
+    });
+    texts.put("sort_deadline", new String[] {
+        "2 - By Deadline",
+        "2 - Nach Fälligkeitsdatum"
+    });
+    texts.put("sort_created", new String[] {
+        "3 - By Created Date",
+        "3 - Nach Erstellungsdatum"
+    });
+    texts.put("sort_alpha", new String[] {
+        "4 - Alphabetically",
+        "4 - Alphabetisch"
+    });
+    texts.put("sort_back", new String[] {
+        "5 - Back",
+        "5 - Zurück"
+    });
+    texts.put("sort_done", new String[] {
+        "Tasks sorted successfully!",
+        "Aufgaben erfolgreich sortiert!"
+    });
+
     texts.put(
         "saving_error",
         new String[] {
