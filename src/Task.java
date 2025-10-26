@@ -10,22 +10,24 @@ public class Task implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public enum Priority {
-    LOW,
+    HIGH,
     MEDIUM,
-    HIGH
+    LOW
   }
 
   private final String title;
   private boolean isDone;
+  private boolean isArchived;
   private final LocalDateTime createdDate;
-  private final LocalDate deadline;
-  private final Priority priority;
+  private LocalDate deadline;
+  private Priority priority;
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
   public Task(String title, LocalDate deadline, Priority priority) {
     this.title = title;
     this.isDone = false;
+    this.isArchived = false;
     this.createdDate = LocalDateTime.now();
     this.deadline = deadline;
     this.priority = priority;
@@ -37,6 +39,14 @@ public class Task implements Serializable {
 
   public boolean isDone() {
     return isDone;
+  }
+
+  public boolean isArchived() {
+    return isArchived;
+  }
+
+  public void setArchived(boolean archived) {
+    isArchived = archived;
   }
 
   public void markDone() {
@@ -51,8 +61,16 @@ public class Task implements Serializable {
     return deadline;
   }
 
+  public void setDeadline(LocalDate newDeadline) {
+    this.deadline = newDeadline;
+  }
+
   public Priority getPriority() {
     return priority;
+  }
+
+  public void setPriority(Priority newPriority) {
+    this.priority = newPriority;
   }
 
   public LocalDateTime getCreatedDate() {

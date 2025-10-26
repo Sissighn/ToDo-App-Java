@@ -59,6 +59,14 @@ public class UIHelper {
     texts.put(
         "enter_new",
         new String[] { "Enter the new task: ", "Neue Aufgabe eingeben: " });
+    texts.put("add_deadline", new String[] {
+        "Enter a deadline (dd.MM.yyyy) or press Enter to skip: ",
+        "Gib ein Fälligkeitsdatum ein (dd.MM.yyyy) oder Enter zum Überspringen: "
+    });
+    texts.put("add_priority", new String[] {
+        "Enter priority (1=High, 2=Medium, 3=Low) or press Enter to skip: ",
+        "Gib die Priorität ein (1=Hoch, 2=Mittel, 3=Niedrig) oder Enter zum Überspringen: "
+    });
     texts.put(
         "empty_task",
         new String[] { "Task cannot be empty!", "Aufgabe darf nicht leer sein!" });
@@ -131,7 +139,6 @@ public class UIHelper {
             "Language set to English.",
             "Sprache auf Deutsch gesetzt.",
         });
-    // Sorting menu
     texts.put("sort_menu_title", new String[] {
         "=== Sorting ===",
         "=== Sortierung ==="
@@ -164,7 +171,42 @@ public class UIHelper {
         "Tasks sorted successfully!",
         "Aufgaben erfolgreich sortiert!"
     });
-
+    texts.put("edit_title", new String[] {
+        "=== Edit Task ===",
+        "=== Aufgabe bearbeiten ==="
+    });
+    texts.put("edit_choose", new String[] {
+        "Select a task to edit:",
+        "Wähle eine Aufgabe zum Bearbeiten:"
+    });
+    texts.put("edit_enter_num", new String[] {
+        "Enter the number of the task: ",
+        "Gib die Nummer der Aufgabe ein: "
+    });
+    texts.put("edit_new_title", new String[] {
+        "New title (press Enter to skip): ",
+        "Neuer Titel (Enter zum Überspringen): "
+    });
+    texts.put("edit_new_deadline", new String[] {
+        "New deadline (dd.MM.yyyy, Enter to skip): ",
+        "Neues Fälligkeitsdatum (dd.MM.yyyy, Enter zum Überspringen): "
+    });
+    texts.put("edit_new_priority", new String[] {
+        "New priority (1=High, 2=Medium, 3=Low, Enter to skip): ",
+        "Neue Priorität (1=Hoch, 2=Mittel, 3=Niedrig, Enter zum Überspringen): "
+    });
+    texts.put("edit_success", new String[] {
+        "Task updated successfully!",
+        "Aufgabe erfolgreich aktualisiert!"
+    });
+    texts.put("invalid_date", new String[] {
+        "Invalid date format!",
+        "Ungültiges Datumsformat!"
+    });
+    texts.put("invalid_priority", new String[] {
+        "Invalid priority!",
+        "Ungültige Priorität!"
+    });
     texts.put(
         "saving_error",
         new String[] {

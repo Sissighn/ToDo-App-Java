@@ -22,22 +22,22 @@ public class Main {
       while (running) {
         TodoPrinter.printTodoList(tasks);
 
-        int choice = getValidNumber(scanner, UIHelper.t(""), 1, 6);
+        int choice = getValidNumber(scanner, UIHelper.t(""), 1, 7);
 
         switch (choice) {
           case 1 -> addTask(tasks, scanner);
-          case 2 -> markTaskDone(tasks, scanner);
-          case 3 -> deleteTask(tasks, scanner);
-          case 4 -> sortTasks(tasks, scanner); // new option
-          case 5 -> settingsMenu(scanner);
-          case 6 -> {
-            System.out.println(
-                UIHelper.PASTEL_GREEN + UIHelper.t("goodbye") + UIHelper.RESET);
+          case 2 -> TaskManager.editTask(tasks, scanner); // 🆕 moved Edit here
+          case 3 -> markTaskDone(tasks, scanner);
+          case 4 -> deleteTask(tasks, scanner);
+          case 5 -> sortTasks(tasks, scanner);
+          case 6 -> settingsMenu(scanner);
+          case 7 -> {
+            System.out.println(UIHelper.PASTEL_GREEN + UIHelper.t("goodbye") + UIHelper.RESET);
             saveTasks(tasks);
             running = false;
           }
           default -> System.out.println(
-              String.format(UIHelper.t("invalid_choice"), 1, 6));
+              String.format(UIHelper.t("invalid_choice"), 1, 7));
         }
       }
 
@@ -67,16 +67,22 @@ public class Main {
     }
 
     // Priority
-    System.out.print("Enter priority (1 = LOW, 2 = MEDIUM, 3 = HIGH): ");
-    String priorityInput = scanner.nextLine().trim();
+    System.out.print(UIHelper.t("add_priority"));
+    String prioInput = scanner.nextLine().trim();
     Task.Priority priority = null;
-
-    if (!priorityInput.isEmpty()) {
-      switch (priorityInput) {
-        case "1" -> priority = Task.Priority.LOW;
-        case "2" -> priority = Task.Priority.MEDIUM;
-        case "3" -> priority = Task.Priority.HIGH;
-        default -> System.out.println(UIHelper.PASTEL_YELLOW + "Invalid priority, set to MEDIUM." + UIHelper.RESET);
+    if (!prioInput.isEmpty()) {
+      try {
+        int num = Integer.parseInt(prioInput);
+        switch (num) {
+          case 1 -> priority = Task.Priority.HIGH;
+          case 2 -> priority = Task.Priority.MEDIUM;
+          case 3 -> priority = Task.Priority.LOW;
+          default -> {
+            System.out.println(UIHelper.PASTEL_RED + UIHelper.t("invalid_priority") + UIHelper.RESET);
+          }
+        }
+      } catch (NumberFormatException e) {
+        System.out.println(UIHelper.PASTEL_RED + UIHelper.t("please_number") + UIHelper.RESET);
       }
     }
 
@@ -267,7 +273,7 @@ public class Main {
               return 1;
             if (b.getPriority() == null)
               return -1;
-            return b.getPriority().compareTo(a.getPriority());
+            return a.getPriority().compareTo(b.getPriority());
           });
         }
         case 2 -> {
