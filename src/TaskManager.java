@@ -1,4 +1,4 @@
-package JavaProjects.TodoApp.src;
+package JavaProjects.PlanIT.src;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

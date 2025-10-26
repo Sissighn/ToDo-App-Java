@@ -1,4 +1,4 @@
-package JavaProjects.TodoApp.src;
+package JavaProjects.PlanIT.src;
 
 import java.io.Serializable;
 import java.time.LocalDate;
