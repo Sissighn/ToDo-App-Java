@@ -11,7 +11,7 @@ public class Main {
   private static final String TASK_FILE = System.getProperty("user.home") + "/Documents/tasks.dat";
 
   public static void main(String[] args) {
-    // Load language from settings
+
     UIHelper.Language lang = UIHelper.loadLanguageFromFile();
     UIHelper.setLanguage(lang);
 

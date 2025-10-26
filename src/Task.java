@@ -16,8 +16,8 @@ public class Task implements Serializable {
 
   private final String title;
   private boolean isDone;
-  private LocalDate deadline;
-  private Priority priority;
+  private final LocalDate deadline;
+  private final Priority priority;
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
