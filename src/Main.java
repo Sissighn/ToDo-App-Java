@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Main {
 
   private static final String TASK_FILE = System.getProperty("user.home") + "/Documents/tasks.dat";
+  private static final String ARCHIVE_FILE = System.getProperty("user.home") + "/Documents/archive.dat";
 
   public static void main(String[] args) {
 
@@ -26,12 +27,15 @@ public class Main {
 
         switch (choice) {
           case 1 -> addTask(tasks, scanner);
-          case 2 -> TaskManager.editTask(tasks, scanner); // 🆕 moved Edit here
+          case 2 -> TaskManager.editTask(tasks, scanner);
           case 3 -> markTaskDone(tasks, scanner);
           case 4 -> deleteTask(tasks, scanner);
-          case 5 -> sortTasks(tasks, scanner);
-          case 6 -> settingsMenu(scanner);
-          case 7 -> {
+          case 5 -> TaskManager.archiveTask(tasks, scanner);
+          case 6 -> TaskManager.viewArchive(scanner);
+          case 7 -> TaskManager.clearCompletedTasks(tasks);
+          case 8 -> sortTasks(tasks, scanner);
+          case 9 -> settingsMenu(scanner);
+          case 10 -> {
             System.out.println(UIHelper.PASTEL_GREEN + UIHelper.t("goodbye") + UIHelper.RESET);
             saveTasks(tasks);
             running = false;
@@ -43,6 +47,14 @@ public class Main {
 
       scanner.close();
     }
+  }
+
+  public static String getTaskFilePath() {
+    return TASK_FILE;
+  }
+
+  public static String getArchiveFilePath() {
+    return ARCHIVE_FILE;
   }
 
   private static void addTask(ArrayList<Task> tasks, Scanner scanner) {
@@ -166,7 +178,7 @@ public class Main {
     }
   }
 
-  private static void saveTasks(ArrayList<Task> tasks) {
+  public static void saveTasks(ArrayList<Task> tasks) {
     try (
         ObjectOutputStream oos = new ObjectOutputStream(
             new FileOutputStream(TASK_FILE))) {
@@ -181,7 +193,7 @@ public class Main {
   }
 
   @SuppressWarnings("unchecked")
-  private static ArrayList<Task> loadTasks() {
+  public static ArrayList<Task> loadTasks() {
     File f = new File(TASK_FILE);
     if (!f.exists())
       return new ArrayList<>();

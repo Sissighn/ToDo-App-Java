@@ -100,9 +100,12 @@ public class TodoPrinter {
                 "2 - Edit",
                 "3 - Done/Undone",
                 "4 - Delete",
-                "5 - Sorting",
-                "6 - Settings",
-                "7 - Exit",
+                "5 - Archive",
+                "6 - View archive",
+                "7 - Clear completed tasks",
+                "8 - Sorting",
+                "9 - Settings",
+                "10 - Exit"
         };
 
         int buttonWidth = 0;

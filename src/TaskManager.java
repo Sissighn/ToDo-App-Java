@@ -1,10 +1,20 @@
 package JavaProjects.PlanIT.src;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TaskManager {
+
+    private static String getArchivePath() {
+        return Main.getArchiveFilePath();
+    }
 
     /**
      * Allows the user to edit an existing task (title, deadline, priority).
@@ -66,6 +76,81 @@ public class TaskManager {
         }
 
         System.out.println(UIHelper.PASTEL_GREEN + UIHelper.t("edit_success") + UIHelper.RESET);
+    }
+
+    // archive
+    public static void archiveTask(ArrayList<Task> tasks, Scanner scanner) {
+        if (tasks.isEmpty()) {
+            System.out.println(UIHelper.PASTEL_YELLOW + UIHelper.t("no_tasks") + UIHelper.RESET);
+            return;
+        }
+
+        UIHelper.printHeader(UIHelper.t("archive_title"));
+        TodoPrinter.printTodoList(tasks);
+
+        int num = getValidNumber(scanner, UIHelper.t("archive_enter_num"), 0, tasks.size());
+        if (num == 0) {
+            System.out.println(UIHelper.PASTEL_YELLOW + UIHelper.t("deletion_cancel") + UIHelper.RESET);
+            return;
+        }
+
+        Task t = tasks.get(num - 1);
+        t.setArchived(true);
+
+        // Load archived list
+        ArrayList<Task> archivedTasks = loadArchive();
+        archivedTasks.add(t);
+
+        // Remove from main list
+        tasks.remove(t);
+
+        // Save both lists
+        saveArchive(archivedTasks);
+        Main.saveTasks(tasks);
+
+        System.out.println(UIHelper.PASTEL_GREEN + UIHelper.t("archived_success") + UIHelper.RESET);
+    }
+
+    public static void viewArchive(Scanner scanner) {
+        ArrayList<Task> archived = loadArchive();
+        UIHelper.printHeader(UIHelper.t("archive_view"));
+        if (archived.isEmpty()) {
+            System.out.println(UIHelper.PASTEL_YELLOW + UIHelper.t("archive_empty") + UIHelper.RESET);
+            return;
+        }
+        TodoPrinter.printTodoList(archived);
+        System.out.println(UIHelper.PASTEL_PURPLE + UIHelper.t("press_enter") + UIHelper.RESET);
+        scanner.nextLine();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ArrayList<Task> loadArchive() {
+        File f = new File(getArchivePath());
+        if (!f.exists())
+            return new ArrayList<>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
+            return (ArrayList<Task>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    private static void saveArchive(ArrayList<Task> archive) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getArchivePath()))) {
+            oos.writeObject(archive);
+        } catch (IOException e) {
+            System.out.println(UIHelper.PASTEL_RED + UIHelper.t("saving_error") + e.getMessage() + UIHelper.RESET);
+        }
+    }
+
+    public static void clearCompletedTasks(ArrayList<Task> tasks) {
+        long before = tasks.size();
+        tasks.removeIf(t -> t.isDone() && !t.isArchived());
+        long after = tasks.size();
+
+        Main.saveTasks(tasks);
+        System.out.println(UIHelper.PASTEL_GREEN +
+                (before - after) + " " + UIHelper.t("tasks_cleared") + UIHelper.RESET);
     }
 
     /**
