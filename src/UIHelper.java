@@ -34,8 +34,8 @@ public class UIHelper {
                 texts.put(
                                 "welcome",
                                 new String[] {
-                                                "    Welcome to your To-Do List!",
-                                                "    Willkommen zu deiner To-Do-Liste!",
+                                                "Welcome to your To-Do List!",
+                                                "Willkommen zu deiner To-Do-Liste!",
                                 });
                 texts.put(
                                 "no_tasks",
@@ -322,4 +322,16 @@ public class UIHelper {
                                         PASTEL_RED_URGENT + "Could not save settings: " + e.getMessage() + RESET);
                 }
         }
+
+        public static void printDashboard(int archived, int completed, int total) {
+                String archivedLabel = (language == Language.EN) ? "Archived" : "Archiviert";
+                String completedLabel = (language == Language.EN) ? "Completed" : "Erledigt";
+                String totalLabel = (language == Language.EN) ? "Total" : "Gesamt";
+
+                String line = "📦 " + archivedLabel + ": " + archived +
+                                " | ✅ " + completedLabel + ": " + completed +
+                                " | 📋 " + totalLabel + ": " + total;
+                System.out.println(PASTEL_CYAN + line + RESET);
+        }
+
 }

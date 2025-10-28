@@ -124,7 +124,7 @@ public class TaskManager {
     }
 
     @SuppressWarnings("unchecked")
-    private static ArrayList<Task> loadArchive() {
+    public static ArrayList<Task> loadArchive() {
         File f = new File(getArchivePath());
         if (!f.exists())
             return new ArrayList<>();

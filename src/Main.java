@@ -25,6 +25,14 @@ public class Main {
 
       while (running) {
         UIHelper.printPageHeader("home");
+
+        ArrayList<Task> archivedTasks = TaskManager.loadArchive();
+        long completed = tasks.stream().filter(Task::isDone).count();
+        int archivedCount = archivedTasks.size();
+        int total = tasks.size() + archivedCount;
+
+        UIHelper.printDashboard(archivedCount, (int) completed, total);
+
         TodoPrinter.printTodoList(tasks);
 
         int choice = getValidNumber(scanner, UIHelper.t(""), 1, 10);
