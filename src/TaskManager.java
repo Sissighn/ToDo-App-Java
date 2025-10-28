@@ -25,7 +25,7 @@ public class TaskManager {
             return;
         }
 
-        UIHelper.printHeader(UIHelper.t("edit_title"));
+        UIHelper.printPageHeader("edit");
         System.out.println(UIHelper.t("edit_choose"));
         TodoPrinter.printTodoList(tasks);
 
@@ -85,7 +85,7 @@ public class TaskManager {
             return;
         }
 
-        UIHelper.printHeader(UIHelper.t("archive_title"));
+        UIHelper.printPageHeader("archive");
         TodoPrinter.printTodoList(tasks);
 
         int num = getValidNumber(scanner, UIHelper.t("archive_enter_num"), 0, tasks.size());
@@ -113,7 +113,7 @@ public class TaskManager {
 
     public static void viewArchive(Scanner scanner) {
         ArrayList<Task> archived = loadArchive();
-        UIHelper.printHeader(UIHelper.t("archive_view"));
+        UIHelper.printPageHeader("viewArchive");
         if (archived.isEmpty()) {
             System.out.println(UIHelper.PASTEL_YELLOW + UIHelper.t("archive_empty") + UIHelper.RESET);
             return;
@@ -145,6 +145,7 @@ public class TaskManager {
 
     public static void clearCompletedTasks(ArrayList<Task> tasks) {
         long before = tasks.size();
+        UIHelper.printPageHeader("clear");
         tasks.removeIf(t -> t.isDone() && !t.isArchived());
         long after = tasks.size();
 

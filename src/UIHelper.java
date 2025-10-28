@@ -259,6 +259,28 @@ public class UIHelper {
                 return arr[language == Language.EN ? 0 : 1];
         }
 
+        public static void printPageHeader(String sectionKey) {
+                clearScrean();
+
+                String title = switch (sectionKey) {
+                        case "home" -> "Home";
+                        case "edit" -> "Edit Task";
+                        case "archive" -> "Archive";
+                        case "viewArchive" -> "View Archive";
+                        case "clear" -> "Clear Completed";
+                        case "settings" -> "Settings";
+                        case "sort" -> "Sort";
+                        case "add" -> "Add Task";
+                        case "delete" -> "Delete";
+                        default -> "To-Do List";
+                };
+
+                String line = "══════════════════════════════════════════════";
+                System.out.println(PASTEL_PURPLE + line + RESET);
+                System.out.println(BOLD + PASTEL_PINK + "  " + title + RESET);
+                System.out.println(PASTEL_PURPLE + line + RESET);
+        }
+
         public static void printHeader(String title) {
                 clearScrean();
                 String line = "══════════════════════════════════════════════";

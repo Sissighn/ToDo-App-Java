@@ -8,7 +8,6 @@ public class TodoPrinter {
     private static final int TASK_WIDTH = 40;
 
     public static void printTodoList(ArrayList<Task> tasks) {
-        UIHelper.printHeader(UIHelper.t("welcome"));
 
         String placeHolder = UIHelper.PASTEL_PINK;
         String lineColor = UIHelper.PASTEL_BROWN;

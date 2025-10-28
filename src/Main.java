@@ -20,10 +20,14 @@ public class Main {
     try (Scanner scanner = new Scanner(System.in)) {
       boolean running = true;
 
+      UIHelper.printHeader(UIHelper.t("welcome"));
+      System.out.println();
+
       while (running) {
+        UIHelper.printPageHeader("home");
         TodoPrinter.printTodoList(tasks);
 
-        int choice = getValidNumber(scanner, UIHelper.t(""), 1, 7);
+        int choice = getValidNumber(scanner, UIHelper.t(""), 1, 10);
 
         switch (choice) {
           case 1 -> addTask(tasks, scanner);
@@ -41,7 +45,7 @@ public class Main {
             running = false;
           }
           default -> System.out.println(
-              String.format(UIHelper.t("invalid_choice"), 1, 7));
+              String.format(UIHelper.t("invalid_choice"), 1, 10));
         }
       }
 
@@ -221,7 +225,7 @@ public class Main {
 
   private static void settingsMenu(Scanner scanner) {
     while (true) {
-      UIHelper.printHeader(UIHelper.t("settings_title"));
+      UIHelper.printPageHeader("settings");
       System.out.println(UIHelper.t("settings_lang"));
       System.out.println(UIHelper.t("settings_back"));
 
@@ -266,7 +270,7 @@ public class Main {
     }
 
     while (true) {
-      UIHelper.printHeader(UIHelper.t("sort_menu_title"));
+      UIHelper.printPageHeader("sort");
       System.out.println(UIHelper.t("sort_choose"));
       System.out.println(UIHelper.t("sort_priority"));
       System.out.println(UIHelper.t("sort_deadline"));
